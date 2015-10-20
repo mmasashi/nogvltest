@@ -1,36 +1,44 @@
 # Nogvltest
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nogvltest`. To experiment with that code, run `bin/console` for an interactive prompt.
+This project is for testing `rb_thread_call_without_gvl` method which unlocks GVL(Global VM Lock).
+With this project, you can confirm that the CPU usage is different between with GVL and without GVL.
+Here is the example, running this script on the ec2 c3.xlarg instance.
 
-TODO: Delete this and the text above, and describe your gem
+```
+# Run 4 threads with GVL (bin/run_threads.sh -g 4)
+%Cpu0  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+%Cpu1  :100.0 us,  0.0 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+%Cpu2  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+%Cpu3  :  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'nogvltest'
+# Run 4 threads without GVL (bin/run_threads.sh 4)
+%Cpu0  :100.0 us,  0.0 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+%Cpu1  :100.0 us,  0.0 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+%Cpu2  :100.0 us,  0.0 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+%Cpu3  :100.0 us,  0.0 sy,  0.0 ni,  0.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
 ```
 
-And then execute:
 
-    $ bundle
+# How to run
 
-Or install it yourself as:
+## Start running a process
 
-    $ gem install nogvltest
+- Clone this project into your local
+- Change the current directory to the project home and run the following commands.
 
-## Usage
+```
+# Install dependencies
+bundle install
 
-TODO: Write usage instructions here
+# Build c-extension
+bundle exec rake build
 
-## Development
+# Run threads (2 threads)
+./bin/run_threads.sh 2
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+## Stop the processes
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/nogvltest.
-
+```
+./bin/kill_process.sh
+```
