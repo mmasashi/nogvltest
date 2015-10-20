@@ -12,7 +12,11 @@ static VALUE rb_mNogvltest_run_loop()
 
 static VALUE rb_mNogvltest_run_loop_without_gvl()
 {
-  return (VALUE)rb_thread_call_without_gvl((void *)(rb_blocking_function_t *)rb_mNogvltest_run_loop, NULL, NULL, NULL);
+#ifdef CALL_WITHOUT_GVL
+  return (VALUE)CALL_WITHOUT_GVL((void *)(rb_blocking_function_t *)rb_mNogvltest_run_loop, NULL, NULL, NULL);
+#else
+  return rb_mNogvltest_run_loop();
+#endif
 }
 
 void
