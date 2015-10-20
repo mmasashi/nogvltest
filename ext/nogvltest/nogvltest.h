@@ -20,4 +20,5 @@ typedef void *(*my_blocking_fn_t)(void*);
 #pragma message("The function which disables GVL is not supported on your Ruby version.")
 #endif
 
+
 #endif /* NOGVLTEST_H */
