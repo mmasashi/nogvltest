@@ -27,12 +27,17 @@ Here is the example, running this script on the ec2 c3.xlarg instance.
 However, there seem to be some costs for releasing GVL.
 
 ```
+# Run 1 thread (bin/run_once_bench.sh)
+Start running once bench... num_threads:1 num_loop:1000000
+       user     system      total        real
+with_gvl  0.060000   0.000000   0.060000 (  0.058275)
+without_gvl  0.160000   0.000000   0.160000 (  0.159967)
+
 # Run 2 threads (bin/run_once_bench.sh -n 2)
 Start running once bench... num_threads:2 num_loop:1000000
        user     system      total        real
 with_gvl  0.120000   0.000000   0.120000 (  0.118881)
 without_gvl  3.020000   0.310000   3.330000 (  1.962553)
-
 
 # Run 4 threads (bin/run_once_bench.sh -n 4)
 Start running once bench... num_threads:4 num_loop:1000000
